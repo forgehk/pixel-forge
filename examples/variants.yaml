@@ -1,0 +1,29 @@
+# Example pixel-forge config.
+#
+# Given a photo of a red shirt, generate navy, forest, and charcoal variants.
+# The `target` block selects which pixels get recolored; each `variants` entry
+# specifies what color they become.
+
+input: base-shirt.png
+output_dir: out/
+
+target:
+  # Recolor pixels whose hue is in 340..360 (the red band).
+  hue: [340, 360]
+  # Don't recolor near-grey pixels (background, shadows on white).
+  saturation_min: 0.4
+
+variants:
+  - name: navy
+    target_hue: 220
+    target_saturation: 0.8
+  - name: forest
+    target_hue: 140
+    target_saturation: 0.55
+  - name: charcoal
+    target_hue: 0
+    target_saturation: 0.02
+    target_value_shift: -0.15
+  - name: mustard
+    target_hue: 45
+    target_saturation: 0.7
