@@ -2,7 +2,7 @@
 
 > Turn one product photo into a full color-variant catalog in seconds. Pillow-based, deterministic, no LLMs, no cloud.
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/forgehk/pixel-forge/actions/workflows/ci.yml/badge.svg)](https://github.com/forgehk/pixel-forge/actions/workflows/ci.yml) [![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB.svg)](https://github.com/forgehk/pixel-forge/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -66,9 +66,15 @@ That's why a navy variant generated from a red shirt still looks photographed-in
 
 ## Install & run
 
-```bash
-pip install pixel-forge
+Not on PyPI — the `pixel-forge` name there belongs to an unrelated project. Install from source:
 
+```bash
+git clone https://github.com/forgehk/pixel-forge.git
+cd pixel-forge
+pip install -e .
+```
+
+```bash
 # build all variants
 pixel-forge build variants.yaml
 
@@ -76,7 +82,7 @@ pixel-forge build variants.yaml
 pixel-forge preview variants.yaml --variant navy --show
 ```
 
-Requires Python 3.10+ and Pillow. No external services.
+Requires Python 3.10+ and Pillow. No external services. Tested on Python 3.10, 3.11 and 3.12.
 
 ---
 
@@ -137,6 +143,18 @@ out.save("navy-shirt.png")
 - [ ] Texture overlay (e.g. denim grain) for materials
 - [ ] Auto-detect dominant colors with k-means
 - [ ] Optional CLIP-based "is this still recognizably a shirt" sanity check
+
+---
+
+## Development
+
+```bash
+pip install -e ".[dev]"
+pytest -q
+```
+
+The suite covers the HSV recolor primitives and drives the CLI end to end — YAML
+config on disk in, PNG variants out. CI runs it on Python 3.10, 3.11 and 3.12.
 
 ---
 
