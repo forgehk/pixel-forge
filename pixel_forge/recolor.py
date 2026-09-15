@@ -13,6 +13,16 @@ from pathlib import Path
 
 from PIL import Image
 
+def _flattened_data(img: Image.Image) -> list[tuple[int, int, int, int]]:
+    """Read an image's pixels as a list of tuples.
+
+    ``Image.getdata`` is deprecated and goes away in Pillow 14; the replacement
+    ``get_flattened_data`` only exists from Pillow 11.3. Support both so the
+    package keeps working across the Pillow versions in the wild.
+    """
+    reader = getattr(img, "get_flattened_data", None) or img.getdata
+    return list(reader())
+
 def recolor_pixels(
     pixels: list[tuple[int, int, int, int]],
     *,
@@ -91,7 +101,7 @@ def recolor(
 ) -> Image.Image:
     """Recolor an image file. Returns the recolored Image."""
     img = Image.open(image_path).convert("RGBA")
-    pixels = list(img.getdata())
+    pixels = _flattened_data(img)
     new_pixels = recolor_pixels(
         pixels,
         source_hue_range=source_hue_range,
